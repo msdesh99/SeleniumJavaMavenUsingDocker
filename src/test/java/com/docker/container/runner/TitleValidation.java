@@ -45,7 +45,6 @@ public class TitleValidation {
         driver.get("https://www.google.com");
         System.out.println("BrowserTYpe: "+capabilites.getBrowserName()+" HUB_URL: "+ System.getenv("HUB_URL"));
         Assert.assertTrue(driver.getCurrentUrl().contains("google"));
-        //driver.quit();
     }
      @Test
     public void amazonTitle(){
@@ -83,6 +82,7 @@ public class TitleValidation {
 
 @AfterTest
 public void teardown(){
+        System.out.println(capabilites.getBrowserName()+" Driver is Quiting");
        driver.quit();
 }
 }
