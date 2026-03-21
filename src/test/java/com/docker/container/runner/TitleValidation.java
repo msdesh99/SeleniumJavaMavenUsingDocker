@@ -42,6 +42,7 @@ public class TitleValidation {
     }
     @Test
     public void googleTitle(){
+        System.out.println("Google Test");
         driver.get("https://www.google.com");
         System.out.println("BrowserTYpe: "+capabilites.getBrowserName()+" HUB_URL: "+ System.getenv("HUB_URL"));
         Assert.assertTrue(driver.getCurrentUrl().contains("google"));
