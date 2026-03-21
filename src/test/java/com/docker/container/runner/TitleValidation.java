@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import java.time.LocalDateTime;
-
+import org.testng.annotations.AfterTest;
 public class TitleValidation {
     private DesiredCapabilities capabilites; 
     //private static final String hostUrl = "http://localhost:4445/wd/hub"; 
@@ -33,7 +33,7 @@ public class TitleValidation {
         capabilites = new DesiredCapabilities();
         capabilites.setBrowserName(browserType);
         try{
-           // hostUrl = System.getenv("HUB_URL");
+            hostUrl = System.getenv("HUB_URL");
             url = URI.create(hostUrl).toURL();
             driver = new RemoteWebDriver(url,capabilites);
         }catch(MalformedURLException mfue){
@@ -45,7 +45,13 @@ public class TitleValidation {
         driver.get("https://www.google.com");
         System.out.println("BrowserTYpe: "+capabilites.getBrowserName()+" HUB_URL: "+ System.getenv("HUB_URL"));
         Assert.assertTrue(driver.getCurrentUrl().contains("google"));
-        //driver.quit();
+    }
+     @Test
+    public void amazonTitle(){
+        System.out.println("Amazon Test");
+        driver.get("https://www.amazon.com");
+        System.out.println("BrowserTYpe: "+capabilites.getBrowserName()+" HUB_URL: "+ System.getenv("HUB_URL"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("amazon"));
     }
     @AfterMethod
     public void teardown(ITestResult result){
@@ -72,6 +78,11 @@ public class TitleValidation {
                 System.out.println(ioe.getMessage());
             }
         System.out.println("Test name: "+result.getTestContext().getName());
-        driver.quit();
     }
+
+@AfterTest
+public void teardown(){
+        System.out.println(capabilites.getBrowserName()+" Driver is Quiting");
+       driver.quit();
+}
 }
