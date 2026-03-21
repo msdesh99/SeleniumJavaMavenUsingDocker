@@ -69,4 +69,3 @@ services:
       - HUB_URL=http://HubService:4444/wd/hub
     volumes:
       - ./output:/app/output
-      - testrunnerVol:/app/output
