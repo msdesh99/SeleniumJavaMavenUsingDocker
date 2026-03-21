@@ -1,0 +1,72 @@
+version: "4"
+networks:
+  seleniumgrid4:
+    driver: bridge
+services:
+  HubService:
+    image: selenium/hub:latest
+    container_name: hubservice1
+    ports:
+      - "4445:4444"
+      - "4442:4442"
+      - "4443:4443"
+    networks:
+      - seleniumgrid4
+  ChromeService:
+    image: selenium/node-chrome:latest
+    shm_size: "2gb"
+    ports:
+      - "7900"
+    environment:
+      - SE_EVENT_BUS_HOST=HubService
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1 
+      - SE_NODE_MAX_INSTANCES=1
+    networks:
+      - seleniumgrid4  
+    depends_on:
+      - HubService
+  FirefoxService:
+    image: selenium/node-firefox:latest
+    shm_size: "2gb"
+    ports:
+      - "7900"
+    environment:
+      - SE_EVENT_BUS_HOST=HubService
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1  
+    networks:
+      - seleniumgrid4  
+    depends_on:
+      - HubService
+
+  EdgeService:
+    image: selenium/node-edge:latest
+    shm_size: "2gb"
+    ports:
+      - "7900"
+    environment:
+      - SE_EVENT_BUS_HOST=HubService
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1  
+    networks:
+      - seleniumgrid4  
+    depends_on:
+      - HubService
+  testrunner:
+    build: .
+    depends_on:
+      - HubService
+    networks:
+      - seleniumgrid4
+    environment:
+      - OUTPUT_DIR=/app/output
+      - HUB_URL=http://HubService:4444/wd/hub
+    volumes:
+      - ./output:/app/output
+      - testrunnerVol:/app/output
