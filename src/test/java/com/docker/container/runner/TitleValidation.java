@@ -46,7 +46,7 @@ public class TitleValidation {
         capabilites = new DesiredCapabilities();
         capabilites.setBrowserName(browserType);
         try{
-           // hostUrl = System.getenv("HUB_URL");
+            hostUrl = System.getenv("HUB_URL");
             url = URI.create(hostUrl).toURL();
             driver = new RemoteWebDriver(url,capabilites);
         }catch(MalformedURLException mfue){
